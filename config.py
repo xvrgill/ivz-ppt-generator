@@ -24,6 +24,8 @@ class DevelopmentConfig:
     POST_GROUPS_TABLE = environ.get("POST_GROUPS_TABLE")
     POSTS_TABLE = environ.get("POSTS_TABLE")
 
+    ROOT_URL = "http://127.0.0.1:5000"
+
     # AWS Secrets
     # AWS_SECRET_KEY = environ.get("AWS_SECRET_KEY")
     # AWS_KEY_ID = environ.get("AWS_KEY_ID")
