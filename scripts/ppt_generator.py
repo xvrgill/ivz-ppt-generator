@@ -167,9 +167,9 @@ class PowerPointGenerator:
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
         if file_extension in accepted_image_types:
-            cached_file_path = f"images/{filename}"
+            cached_file_path = path.abspath(f"../../images/{filename}")
         elif file_extension in accepted_video_types:
-            cached_file_path = f"videos/{filename}"
+            cached_file_path = path.abspath(f"../../videos/{filename}")
         data = requests.get(link_to_asset)
         # Todo: Add try block here to catch exceptions
         with open(cached_file_path, "wb") as f:
