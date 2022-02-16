@@ -10,9 +10,6 @@ app.config.from_object("config.HerokuLocalConfig")
 api = Api(app)
 CORS(app)
 
-mkdir("api/videos")
-mkdir("api/images")
-
 
 # Resource Imports
 from api.resources.index import Index

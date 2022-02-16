@@ -4,7 +4,7 @@
 from typing import Union
 from pptx import Presentation
 from pptx.util import Inches
-from os import makedirs, path, chdir, getcwd
+from os import path, chdir, getcwd, mkdir, rmdir
 import requests
 from flask_restplus import abort
 
@@ -167,6 +167,10 @@ class PowerPointGenerator:
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
         current_dir = path.abspath(getcwd())
+        if not path.isdir("api/videos"):
+            mkdir("api/videos")
+        if not path.isdir("api/images"):
+            mkdir("api/images")
         if file_extension in accepted_image_types:
             # images_dir = path.join(path.abspath(path.dirname(__file__)), "images")
             chdir("api/images")
