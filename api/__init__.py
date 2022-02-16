@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
+from os import makedirs
 
 # * Reminder: To use config variables you can import app from another file and use the code - app.config['SOME_VARIABLE']
 
@@ -8,6 +9,8 @@ app = Flask(__name__)
 app.config.from_object("config.HerokuLocalConfig")
 api = Api(app)
 CORS(app)
+
+makedirs("api/videos", "api/images")
 
 
 # Resource Imports
