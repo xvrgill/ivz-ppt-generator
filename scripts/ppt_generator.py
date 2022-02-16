@@ -4,7 +4,7 @@
 from typing import Union
 from pptx import Presentation
 from pptx.util import Inches
-from os import path
+from os import path, chdir, getcwd
 import requests
 from flask_restplus import abort
 
@@ -166,10 +166,15 @@ class PowerPointGenerator:
         file_extension = filename.split(".")[1]
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
+        current_dir = getcwd()
         if file_extension in accepted_image_types:
-            cached_file_path = path.abspath(f"../../images/{filename}")
+            chdir("images")
+            cached_file_path = path.abspath(f"{filename}")
+            chdir(current_dir)
         elif file_extension in accepted_video_types:
-            cached_file_path = path.abspath(f"../../videos/{filename}")
+            chdir("videos")
+            cached_file_path = path.abspath(f"{filename}")
+            chdir(current_dir)
         data = requests.get(link_to_asset)
         # Todo: Add try block here to catch exceptions
         with open(cached_file_path, "wb") as f:

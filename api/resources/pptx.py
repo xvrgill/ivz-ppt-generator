@@ -34,7 +34,7 @@ class PPT(Resource):
             ppt_data["posts"].append(updated_post_data)
 
         # return ppt_data
-
+        print(ppt_data)
         # Create the powerpoint with the collected data
         ppt = PowerPointGenerator()
         prs = ppt.create_presentation()
