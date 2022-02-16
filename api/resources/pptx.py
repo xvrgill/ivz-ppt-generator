@@ -3,7 +3,7 @@
 from flask import send_file
 from flask_restful import Resource
 import requests
-from os import path, mkdir
+from os import path, mkdir, chdir
 from typing import List, Optional
 from api.context_managers.ppt_cm import PPTContextManager
 from api.models.post_key_mappings import post_key_mappings as pkm
@@ -48,10 +48,11 @@ class PPT(Resource):
         # Define absolute paths to the powerpoint file for easy reuse
         if not path.isdir("api/powerpoints"):
             mkdir("api/powerpoints")
-        ppt_dir = path.abspath("api/power_points")
+        ppt_dir = path.abspath("api/powerpoints")
         ppt_path = path.join(ppt_dir, f'{ppt_data["group_name"]}.pptx')
 
         # Use coontext manager to save ppt and remove associated assets
         with PPTContextManager(prs, ppt_path, asset_paths) as f:
-            f.save(ppt_path)
+            chdir("api/powerpoints")
+            f.save(ppt_data["group_name"pp])
             return send_file(ppt_path)
