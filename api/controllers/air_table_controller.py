@@ -14,4 +14,4 @@ class AirTableController:
 
     def get_post(self, id):
         posts_table = Table(self.api_key, self.base_id, self.table_names[1])
-        return posts_table.get(id)
+        return dict(posts_table.get(id))
