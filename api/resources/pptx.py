@@ -33,23 +33,23 @@ class PPT(Resource):
             # append dictionary of post data
             ppt_data["posts"].append(updated_post_data)
 
-        return ppt_data
+        # return ppt_data
 
         # Create the powerpoint with the collected data
-        # ppt = PowerPointGenerator()
-        # prs = ppt.create_presentation()
-        # asset_paths: List[Optional[str]] = list()
-        # for post in ppt_data["posts"]:
-        #     asset_path = ppt.create_slide(prs, post)
-        #     # If asset url is not none and the file name does not already exist in the list, append it
-        #     if asset_path and (asset_path.split("/")[-1] not in asset_paths):
-        #         asset_paths.append(asset_path.split("/")[-1])
+        ppt = PowerPointGenerator()
+        prs = ppt.create_presentation()
+        asset_paths: List[Optional[str]] = list()
+        for post in ppt_data["posts"]:
+            asset_path = ppt.create_slide(prs, post)
+            # If asset url is not none and the file name does not already exist in the list, append it
+            if asset_path and (asset_path.split("/")[-1] not in asset_paths):
+                asset_paths.append(asset_path.split("/")[-1])
 
-        # # Define absolute paths to the powerpoint file for easy reuse
-        # ppt_dir = path.abspath("power_points")
-        # ppt_path = path.join(ppt_dir, f'{ppt_data["group_name"]}.pptx')
+        # Define absolute paths to the powerpoint file for easy reuse
+        ppt_dir = path.abspath("power_points")
+        ppt_path = path.join(ppt_dir, f'{ppt_data["group_name"]}.pptx')
 
-        # # Use coontext manager to save ppt and remove associated assets
-        # with PPTContextManager(prs, ppt_path, asset_paths) as f:
-        #     f.save(ppt_path)
-        #     return send_file(ppt_path)
+        # Use coontext manager to save ppt and remove associated assets
+        with PPTContextManager(prs, ppt_path, asset_paths) as f:
+            f.save(ppt_path)
+            return send_file(ppt_path)
