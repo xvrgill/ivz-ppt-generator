@@ -27,13 +27,13 @@ class PPTContextManager:
         for filename in self.asset_paths:
             try:
                 if (filename.split(".")[1] in accepted_image_types) and exists(f"images/{filename}"):
-                    chdir("api/powerpoints")
+                    chdir("api/images")
                     remove(filename)
-                    print(f"deleted: api/powerpoints/{filename}")
+                    print(f"deleted: api/videos/{filename}")
                 elif (filename.split(".")[1] in accepted_video_types) and exists(f"videos/{filename}"):
-                    chdir("api/powerpoints")
+                    chdir("api/videos")
                     remove(filename)
-                    print(f"deleted: api/powerpoints/{filename}")
+                    print(f"deleted: api/videos/{filename}")
             except ValueError as e:
                 return abort(400, "Asset is not of an accepted format", asset=filename, error=e.message)
             else:

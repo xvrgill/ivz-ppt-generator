@@ -46,12 +46,12 @@ class PPT(Resource):
                 asset_paths.append(asset_path.split("/")[-1])
 
         # Define absolute paths to the powerpoint file for easy reuse
-        ppt_dir = path.abspath("power_points")
+        if not path.isdir("api/powerpoints"):
+            mkdir("api/powerpoints")
+        ppt_dir = path.abspath("api/power_points")
         ppt_path = path.join(ppt_dir, f'{ppt_data["group_name"]}.pptx')
 
         # Use coontext manager to save ppt and remove associated assets
         with PPTContextManager(prs, ppt_path, asset_paths) as f:
-            if not path.isdir("api/powerpoints"):
-                mkdir("api/powerpoints")
             f.save(ppt_path)
             return send_file(ppt_path)
