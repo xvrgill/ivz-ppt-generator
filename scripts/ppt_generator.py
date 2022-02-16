@@ -170,12 +170,12 @@ class PowerPointGenerator:
         if file_extension in accepted_image_types:
             images_dir = path.join(path.abspath(path.dirname(__file__)), "images")
             chdir(images_dir)
-            cached_file_path = path.abspath(f"{filename}")
+            cached_file_path = path.join(images_dir, filename)
             chdir(current_dir)
         elif file_extension in accepted_video_types:
             videos_dir = path.join(path.abspath(path.dirname(__file__)), "videos")
             chdir(videos_dir)
-            cached_file_path = path.abspath(f"{filename}")
+            cached_file_path = path.join(videos_dir, filename)
             chdir(current_dir)
         data = requests.get(link_to_asset)
         # Todo: Add try block here to catch exceptions
