@@ -1,10 +1,12 @@
-# Script that contains rudamentary logic for ppt generator
+"""Script that contains rudamentary logic for ppt generator"""
 
 # Import ppt package
+from typing import Union
 from pptx import Presentation
 from pptx.util import Inches
 from os import path
 import requests
+from flask_restplus import abort
 
 # Todo: Add Paid/Organic and Paid Headline elements
 # Todo: Enable multiple creative assets to be added for each post if required
@@ -204,33 +206,48 @@ class PowerPointGenerator:
         prs = Presentation()
         return prs
 
-    def create_slide(self, prs, post_data):
+    def create_slide(self, prs, post_data: dict) -> Union[str, None]:
+        """Creates a blank slide and adds the elements required for compliance to it
+
+        Args:
+            prs (Type[Presentation]): _description_
+            post_data (dict): _description_
+        """
         # Create blank slide
         slide = self.create_blank_slide(prs)
-        # Add platform element to slide
-        self.create_platform_textbox(slide, post_data["platform"])
-        # Add account element to slide
-        self.create_account_textbox(slide, post_data["account"])
-        # Add country element
-        self.create_country_textbox(slide, post_data["country"])
-        # Add audience element
-        self.create_audience_textbox(slide, post_data["audience"])
-        # Add social copy element
-        self.create_social_copy_textbox(slide, post_data["copy"])
-        # Add link element
-        self.create_link_textbox(slide, post_data["link"])
-        # Add creative asset element
-        self.create_creative_asset_textbox(slide)
-        # Download creative asset
-        link_to_asset = post_data["creative_asset"][0]["url"]
-        cached_asset_path = self.download_creative_asset(link_to_asset)
-        # Add creative asset
-        path_to_asset = path.abspath(cached_asset_path)
-        self.insert_creative_asset(slide, path_to_asset)
 
-    def save_ppt(self, prs, ppt_filename):
+        # Todo: Use strategy pattern to create different slide layouts for organic and paid
+        # Todo: Decide how to handle key error exceptions when data isn't entered
+        try:
+            # Add platform element to slide
+            self.create_platform_textbox(slide, post_data["platform"])
+            # Add account element to slide
+            self.create_account_textbox(slide, post_data["account"])
+            # Add country element
+            self.create_country_textbox(slide, post_data["country"])
+            # Add audience element
+            self.create_audience_textbox(slide, post_data["audience"])
+            # Add social copy element
+            self.create_social_copy_textbox(slide, post_data["copy"])
+            # Add link element
+            self.create_link_textbox(slide, post_data["link"])
+        except KeyError as e:
+            return abort(400, f"Missing data in required field {e}", solution=f"enter data into field {e}")
+
+        # Add creative asset element
+        if "creative_asset" in post_data.keys():
+            self.create_creative_asset_textbox(slide)
+            # Download creative asset
+            link_to_asset = post_data["creative_asset"][0]["url"]
+            cached_asset_path = self.download_creative_asset(link_to_asset)
+            # Add creative asset
+            path_to_asset = path.abspath(cached_asset_path)
+            self.insert_creative_asset(slide, path_to_asset)
+            return link_to_asset
+
+    def save_ppt(self, prs, ppt_filename: str):
         # Save ppt file
-        prs.save(f"{ppt_filename}.pptx")
+        prs.save(f"power_points/{ppt_filename}.pptx")
 
 
 if __name__ == "__main__":

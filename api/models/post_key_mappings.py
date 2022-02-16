@@ -1,0 +1,16 @@
+post_key_mappings = {
+    "Audience": "audience",
+    "Copy": "copy",
+    "Copy Char Count": "copy_char_count",
+    "Country": "country",
+    "Group ID": "group_id",
+    "Linked Post Group": "linked_post_group",
+    "Name": "name",
+    "Paid v. Organic": "paid_v_organic",
+    "Platform": "platform",
+    "Post ID": "post_id",
+    "Publish Date": "publish_date",
+    "Shortened Link": "link",
+    "Social Account": "account",
+    "Creative Asset(s)": "creative_asset",
+}
