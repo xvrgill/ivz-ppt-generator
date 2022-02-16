@@ -6,5 +6,5 @@ from api.controllers.air_table_controller import AirTableController
 class PostGroup(Resource):
     def get(self, id):
         controller = AirTableController()
-        post_group = controller.get_post_group(id)
+        post_group = controller.get_post_group(str(id))
         return jsonify(post_group)
