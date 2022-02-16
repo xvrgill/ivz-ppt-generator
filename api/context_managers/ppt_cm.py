@@ -1,7 +1,9 @@
 # Context manager to manage saved assets - images, videos, and ppt files on teardown
 from typing import IO, List, Optional, Type
-from os import remove
-from os.path import exists
+from os import remove, chdir, getcwd
+from os.path import exists, abspath
+
+from flask_restplus import abort
 
 
 class PPTContextManager:
@@ -21,11 +23,18 @@ class PPTContextManager:
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
         print(self.asset_paths)
+        current_dir = abspath(getcwd())
         for filename in self.asset_paths:
-            if (filename.split(".")[1] in accepted_image_types) and exists(f"images/{filename}"):
-                remove(f"api/images/{filename}")
-                print(f"deleted: api/images/{filename}")
-            elif (filename.split(".")[1] in accepted_video_types) and exists(f"videos/{filename}"):
-                remove(f"api/videos/{filename}")
-                print(f"deleted: api/videos/{filename}")
-        print("done")
+            try:
+                if (filename.split(".")[1] in accepted_image_types) and exists(f"images/{filename}"):
+                    chdir("api/powerpoints")
+                    remove(filename)
+                    print(f"deleted: api/powerpoints/{filename}")
+                elif (filename.split(".")[1] in accepted_video_types) and exists(f"videos/{filename}"):
+                    chdir("api/powerpoints")
+                    remove(filename)
+                    print(f"deleted: api/powerpoints/{filename}")
+            except ValueError as e:
+                return abort(400, "Asset is not of an accepted format", asset=filename, error=e.message)
+            else:
+                chdir(current_dir)

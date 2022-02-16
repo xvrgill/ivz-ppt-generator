@@ -172,7 +172,6 @@ class PowerPointGenerator:
         if not path.isdir("api/images"):
             mkdir("api/images")
         if file_extension in accepted_image_types:
-            # images_dir = path.join(path.abspath(path.dirname(__file__)), "images")
             chdir("api/images")
             cached_file_path = path.abspath(filename)
             # chdir(current_dir)
@@ -189,7 +188,7 @@ class PowerPointGenerator:
             chdir(current_dir)
         return cached_file_path
 
-    # ? --- Use context manager to run this function? ---
+    # ? --- Use context manager to run this function to delete asset once added? ---
     def insert_creative_asset(self, slide, path_to_asset: str):
         # Add creative asset file
         filename = path.basename(path_to_asset)
