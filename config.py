@@ -33,7 +33,7 @@ class DevelopmentConfig:
 
 # Production Configuration
 class HerokuLocalConfig:
-    ROOT_URL = environ.get("HEROKU_LOCAL_PORT")
+    ROOT_URL = "https://ivz-ppt-generator.herokuapp.com"
     AIR_TABLE_API_KEY = environ.get("AIR_TABLE_API_KEY")
     AIR_TABLE_BASE_ID = environ.get("AIR_TABLE_BASE_ID")
     POST_GROUPS_TABLE = environ.get("POST_GROUPS_TABLE")
