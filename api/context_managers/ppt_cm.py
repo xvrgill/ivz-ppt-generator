@@ -23,9 +23,9 @@ class PPTContextManager:
         print(self.asset_paths)
         for filename in self.asset_paths:
             if (filename.split(".")[1] in accepted_image_types) and exists(f"images/{filename}"):
-                remove(f"images/{filename}")
-                print(f"deleted: images/{filename}")
+                remove(f"api/images/{filename}")
+                print(f"deleted: api/images/{filename}")
             elif (filename.split(".")[1] in accepted_video_types) and exists(f"videos/{filename}"):
-                remove(f"videos/{filename}")
-                print(f"deleted: videos/{filename}")
+                remove(f"api/videos/{filename}")
+                print(f"deleted: api/videos/{filename}")
         print("done")
