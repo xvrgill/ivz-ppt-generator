@@ -166,13 +166,15 @@ class PowerPointGenerator:
         file_extension = filename.split(".")[1]
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
-        current_dir = getcwd()
+        current_dir = path.abspath(getcwd())
         if file_extension in accepted_image_types:
-            chdir("images")
+            images_dir = path.join(path.abspath(path.dirname(path.dirname(__file__))), "images")
+            chdir(images_dir)
             cached_file_path = path.abspath(f"{filename}")
             chdir(current_dir)
         elif file_extension in accepted_video_types:
-            chdir("videos")
+            videos_dir = path.join(path.abspath(path.dirname(path.dirname(__file__))), "videos")
+            chdir(videos_dir)
             cached_file_path = path.abspath(f"{filename}")
             chdir(current_dir)
         data = requests.get(link_to_asset)
