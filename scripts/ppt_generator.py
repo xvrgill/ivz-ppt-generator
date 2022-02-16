@@ -168,19 +168,20 @@ class PowerPointGenerator:
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
         current_dir = path.abspath(getcwd())
         if file_extension in accepted_image_types:
-            images_dir = path.join(path.abspath(path.dirname(__file__)), "images")
-            chdir(images_dir)
-            cached_file_path = path.join(images_dir, filename)
-            chdir(current_dir)
+            # images_dir = path.join(path.abspath(path.dirname(__file__)), "images")
+            chdir("api/images")
+            cached_file_path = path.abspath(filename)
+            # chdir(current_dir)
         elif file_extension in accepted_video_types:
-            videos_dir = path.join(path.abspath(path.dirname(__file__)), "videos")
-            chdir(videos_dir)
-            cached_file_path = path.join(videos_dir, filename)
-            chdir(current_dir)
+            # videos_dir = path.join(path.abspath(path.dirname(__file__)), "videos")
+            chdir("api/videos")
+            cached_file_path = path.abspath(filename)
+            # chdir(current_dir)
         data = requests.get(link_to_asset)
         # Todo: Add try block here to catch exceptions
         with open(cached_file_path, "wb") as f:
             f.write(data.content)
+            chdir(current_dir)
         return cached_file_path
 
     # ? --- Use context manager to run this function? ---
