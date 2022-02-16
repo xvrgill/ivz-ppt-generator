@@ -36,5 +36,5 @@ class PPTContextManager:
                     print(f"deleted: api/videos/{filename}")
             except ValueError as e:
                 return abort(400, "Asset is not of an accepted format", asset=filename, error=e.message)
-            else:
+            finally:
                 chdir(current_dir)
