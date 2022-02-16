@@ -40,3 +40,12 @@ class HerokuLocalConfig:
     POST_GROUPS_TABLE = environ.get("POST_GROUPS_TABLE")
     POSTS_TABLE = environ.get("POSTS_TABLE")
     SECRET_KEY = environ.get("FLASK_SECRET_KEY")
+
+
+class HerokuLocalConfig:
+    ROOT_URL = "https://ivz-ppt-generator.herokuapp.com"
+    AIR_TABLE_API_KEY = environ.get("AIR_TABLE_API_KEY")
+    AIR_TABLE_BASE_ID = environ.get("AIR_TABLE_BASE_ID")
+    POST_GROUPS_TABLE = environ.get("POST_GROUPS_TABLE")
+    POSTS_TABLE = environ.get("POSTS_TABLE")
+    SECRET_KEY = environ.get("FLASK_SECRET_KEY")
