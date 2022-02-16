@@ -10,7 +10,7 @@ class AirTableController:
 
     def get_post_group(self, id):
         post_groups_table = Table(self.api_key, self.base_id, self.table_names[0])
-        return post_groups_table.get(id)
+        return dict(post_groups_table.get(id))
 
     def get_post(self, id):
         posts_table = Table(self.api_key, self.base_id, self.table_names[1])
