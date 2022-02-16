@@ -54,5 +54,5 @@ class PPT(Resource):
         # Use coontext manager to save ppt and remove associated assets
         with PPTContextManager(prs, ppt_path, asset_paths) as f:
             chdir("api/powerpoints")
-            f.save(ppt_data["group_name"pp])
+            f.save(ppt_data["group_name"])
             return send_file(ppt_path)
