@@ -3,9 +3,7 @@ from pyairtable import Table
 
 
 class AirTableController:
-    def __init__(
-        self, api_key: str = app.config["AIR_TABLE_API_KEY"], base_id: str = app.config["AIR_TABLE_BASE_ID"], table_names: list[str] = [app.config["POST_GROUPS_TABLE"], app.config["POSTS_TABLE"]]
-    ) -> None:
+    def __init__(self, api_key: str = "keyDFVLu56iM5h3za", base_id: str = "appPxABnbFX7yd6LQ", table_names: list[str] = ["Social Post Groups", "Social Posts"]) -> None:
         self.api_key = api_key
         self.base_id = base_id
         self.table_names = table_names
