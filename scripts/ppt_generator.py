@@ -169,30 +169,30 @@ class PowerPointGenerator:
         current_dir = path.abspath(getcwd())
 
         #! Development paths - not to be used in production
-        # if path.isdir("api/videos") == False:
-        #     mkdir("api/videos")
-        # if path.isdir("api/images") == False:
-        #     mkdir("api/images")
+        if path.isdir("api/videos") == False:
+            mkdir("api/videos")
+        if path.isdir("api/images") == False:
+            mkdir("api/images")
         #! Production paths - to be used in production
-        if path.isdir("app/videos") == False:
-            mkdir("app/videos")
-        if path.isdir("app/images") == False:
-            mkdir("app/images")
+        # if path.isdir("app/videos") == False:
+        #     mkdir("app/videos")
+        # if path.isdir("app/images") == False:
+        #     mkdir("app/images")
 
         #! Development paths - not to be used in production
-        # if file_extension in accepted_image_types:
-        #     chdir("api/images")
-        #     cached_file_path = path.abspath(filename)
-        # elif file_extension in accepted_video_types:
-        #     chdir("api/videos")
-        #     cached_file_path = path.abspath(filename)
-        #! Production paths - to be used in production
         if file_extension in accepted_image_types:
-            chdir("app/images")
+            chdir("api/images")
             cached_file_path = path.abspath(filename)
         elif file_extension in accepted_video_types:
-            chdir("app/videos")
+            chdir("api/videos")
             cached_file_path = path.abspath(filename)
+        #! Production paths - to be used in production
+        # if file_extension in accepted_image_types:
+        #     chdir("app/images")
+        #     cached_file_path = path.abspath(filename)
+        # elif file_extension in accepted_video_types:
+        #     chdir("app/videos")
+        #     cached_file_path = path.abspath(filename)
 
         data = requests.get(link_to_asset)
         # Todo: Add try block here to catch exceptions

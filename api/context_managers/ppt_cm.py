@@ -20,15 +20,15 @@ class PPTContextManager:
 
     def __exit__(self, exc_type, exec_val, traceback) -> None:
         #! Development paths - not to be used in production
-        # remove(f"api/power_points/{self.ppt_filename}")
-        # if isdir("api/images"):
-        #     rmtree("api/images")
-        # if isdir("api/videos"):
-        #     rmtree("api/videos")
-        # remove(f"api/power_points/{self.ppt_filename}")
+        remove(f"api/power_points/{self.ppt_filename}")
+        if isdir("api/images"):
+            rmtree("api/images")
+        if isdir("api/videos"):
+            rmtree("api/videos")
+        remove(f"api/power_points/{self.ppt_filename}")
         #! Production paths - to be used in production
-        if isdir("app/images"):
-            rmtree("app/images")
-        if isdir("app/videos"):
-            rmtree("app/videos")
-        remove(f"app/power_points/{self.ppt_filename}")
+        # if isdir("app/images"):
+        #     rmtree("app/images")
+        # if isdir("app/videos"):
+        #     rmtree("app/videos")
+        # remove(f"app/power_points/{self.ppt_filename}")
