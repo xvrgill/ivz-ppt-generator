@@ -51,12 +51,17 @@ class PPT(Resource):
         ppt_filename = f'{ppt_data["group_name"]}.pptx'
         # Use coontext manager to save ppt and remove associated assets
         # Define absolute paths to the powerpoint file for easy reuse
-        #! Development path
-        if not path.isdir("api/power_points"):
-            #! Development path
-            mkdir("api/power_points")
-        with PPTContextManager(prs, ppt_filename, asset_paths) as f:
+        #! Development paths - not to be used in production
+        # if not path.isdir("api/power_points"):
+        #     mkdir("api/power_points")
+        # with PPTContextManager(prs, ppt_filename, asset_paths) as f:
+        #     # chdir("../power_points")
+        #     f.save(f"api/power_points/{ppt_filename}")
+        #     return send_file(f"power_points/{ppt_filename}", as_attachment=True, attachment_filename=ppt_filename)
+        #! Production paths - to be used in production
+        if not path.isdir("app/power_points"):
+            mkdir("app/power_points")
+        with PPTContextManager(prs, ppt_filename) as f:
             # chdir("../power_points")
-            #! Development path
-            f.save(f"api/power_points/{ppt_filename}")
+            f.save(f"app/power_points/{ppt_filename}")
             return send_file(f"power_points/{ppt_filename}", as_attachment=True, attachment_filename=ppt_filename)

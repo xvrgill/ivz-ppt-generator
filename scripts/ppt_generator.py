@@ -168,21 +168,31 @@ class PowerPointGenerator:
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
         current_dir = path.abspath(getcwd())
 
-        if path.isdir("api/videos") == False:
-            mkdir("api/videos")
-        if path.isdir("api/images") == False:
-            mkdir("api/images")
+        #! Development paths - not to be used in production
+        # if path.isdir("api/videos") == False:
+        #     mkdir("api/videos")
+        # if path.isdir("api/images") == False:
+        #     mkdir("api/images")
+        #! Production paths - to be used in production
+        if path.isdir("app/videos") == False:
+            mkdir("app/videos")
+        if path.isdir("app/images") == False:
+            mkdir("app/images")
 
+        #! Development paths - not to be used in production
+        # if file_extension in accepted_image_types:
+        #     chdir("api/images")
+        #     cached_file_path = path.abspath(filename)
+        # elif file_extension in accepted_video_types:
+        #     chdir("api/videos")
+        #     cached_file_path = path.abspath(filename)
+        #! Production paths - to be used in production
         if file_extension in accepted_image_types:
-            chdir("api/images")
+            chdir("app/images")
             cached_file_path = path.abspath(filename)
-            # chdir(current_dir)
         elif file_extension in accepted_video_types:
-            # videos_dir = path.join(path.abspath(path.dirname(__file__)), "videos")
-            # makedirs("api/videos", "api/images")
-            chdir("api/videos")
+            chdir("app/videos")
             cached_file_path = path.abspath(filename)
-            # chdir(current_dir)
 
         data = requests.get(link_to_asset)
         # Todo: Add try block here to catch exceptions
@@ -261,7 +271,6 @@ class PowerPointGenerator:
             return link_to_asset
 
     def save_ppt(self, prs, ppt_filename: str):
-        # Save ppt file
         prs.save(f"power_points/{ppt_filename}.pptx")
 
 
