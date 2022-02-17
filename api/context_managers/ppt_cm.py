@@ -27,7 +27,6 @@ class PPTContextManager:
             rmtree("api/images")
         if isdir("api/videos"):
             rmtree("api/videos")
-        remove(f"api/power_points/{self.ppt_filename}")
         #! Production paths - to be used in production
         # if isdir("app/images"):
         #     rmtree("app/images")
