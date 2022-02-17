@@ -167,10 +167,12 @@ class PowerPointGenerator:
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
         current_dir = path.abspath(getcwd())
-        if not path.isdir("api/videos"):
+
+        if path.isdir("api/videos") == False:
             mkdir("api/videos")
-        if not path.isdir("api/images"):
+        if path.isdir("api/images") == False:
             mkdir("api/images")
+
         if file_extension in accepted_image_types:
             chdir("api/images")
             cached_file_path = path.abspath(filename)
@@ -181,6 +183,7 @@ class PowerPointGenerator:
             chdir("api/videos")
             cached_file_path = path.abspath(filename)
             # chdir(current_dir)
+
         data = requests.get(link_to_asset)
         # Todo: Add try block here to catch exceptions
         with open(cached_file_path, "wb") as f:
