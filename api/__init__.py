@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
-from os import mkdir
 
 # * Reminder: To use config variables you can import app from another file and use the code - app.config['SOME_VARIABLE']
 

@@ -2,7 +2,7 @@
 # from api import app
 from flask import send_file
 from flask_restful import Resource
-from os import path, mkdir, chdir
+from os import path, mkdir
 from typing import List, Optional
 from api.context_managers.ppt_cm import PPTContextManager
 from api.models.post_key_mappings import post_key_mappings as pkm
