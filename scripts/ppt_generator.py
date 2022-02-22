@@ -206,9 +206,9 @@ class PowerPointGenerator:
         # Add creative asset file
         filename = path.basename(path_to_asset)
         file_extension = filename.split(".")[1]
-        accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
+        accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic", "pdf"]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
-        if (file_extension in accepted_image_types) or file_extension == "pdf":
+        if file_extension in accepted_image_types:
             # Creative asset positioning and size definitions
             left = Inches(5.25)
             top = Inches(3.1)
