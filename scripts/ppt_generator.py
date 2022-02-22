@@ -94,7 +94,7 @@ class PowerPointGenerator:
         p = account_tf.paragraphs[0]
         # Bold run
         bold_run = p.add_run()
-        bold_run.text = "Country: "
+        bold_run.text = "Audience: "
         bold_run_font = bold_run.font
         bold_run_font.bold = True
         # Normal run
