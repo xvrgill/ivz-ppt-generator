@@ -6,7 +6,7 @@ from pptx import Presentation
 from pptx.util import Inches
 from os import path, chdir, getcwd, mkdir, rmdir
 import requests
-from flask_restplus import abort
+from flask import abort
 
 # Todo: Add Paid/Organic and Paid Headline elements
 # Todo: Enable multiple creative assets to be added for each post if required
@@ -257,7 +257,7 @@ class PowerPointGenerator:
             # Add link element
             self.create_link_textbox(slide, post_data["link"])
         except KeyError as e:
-            return abort(400, f"Missing data in required field {e}", solution=f"enter data into field {e}")
+            return abort(400, f"Missing data in required field {e}")
 
         # Add creative asset element
         if "creative_asset" in post_data.keys():
