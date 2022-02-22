@@ -1,12 +1,14 @@
+"""Configuration for flask app"""
 from os import environ, path
-from dotenv import load_dotenv
+from Dotenv import load_dotenv
 
 
 basedir = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(basedir, ".env"))
 
 
-class DevelopmentConfig:
+# TODO: Use dataclass to avoid 'too few arguements lint error'
+class Developmentconfig:
     # Set config variables
     # FLASK_APP = "api"
     # FLASK_ENV = "development"

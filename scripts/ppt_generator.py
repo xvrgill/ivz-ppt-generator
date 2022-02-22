@@ -208,7 +208,7 @@ class PowerPointGenerator:
         file_extension = filename.split(".")[1]
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
-        if file_extension in accepted_image_types:
+        if (file_extension in accepted_image_types) or file_extension == "pdf":
             # Creative asset positioning and size definitions
             left = Inches(5.25)
             top = Inches(3.1)

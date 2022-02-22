@@ -1,3 +1,7 @@
+"""
+Entry point to flask application that is called with gunicorn
+"""
+
 from api import app
 
 if __name__ == "__main__":
