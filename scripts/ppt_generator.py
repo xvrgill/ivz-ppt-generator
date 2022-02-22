@@ -180,7 +180,7 @@ class PowerPointGenerator:
         #     mkdir("app/images")
 
         #! Development paths - not to be used in production
-        if file_extension in accepted_image_types:
+        if (file_extension in accepted_image_types) or (file_extension == "pdf"):
             chdir("api/images")
             cached_file_path = path.abspath(filename)
         elif file_extension in accepted_video_types:

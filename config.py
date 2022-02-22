@@ -1,6 +1,6 @@
 """Configuration for flask app"""
 from os import environ, path
-from Dotenv import load_dotenv
+from dotenv import load_dotenv
 
 
 basedir = path.abspath(path.dirname(__file__))
