@@ -1,10 +1,10 @@
-"""Script that contains rudamentary logic for ppt generator"""
+"""Script that contains rudamentary logic for ppt generator."""
 
 # Import ppt package
 from typing import Union
 from pptx import Presentation
 from pptx.util import Inches
-from os import path, chdir, getcwd, mkdir, rmdir
+from os import path, chdir, getcwd, mkdir
 import requests
 from flask import abort
 
@@ -13,15 +13,44 @@ from flask import abort
 
 
 class PowerPointGenerator:
+    """Object for creating power points."""
+
+    def create_presentation(self):
+        """Create *presentation* object.
+
+        :returns
+        """
+        prs = Presentation()
+        return prs
 
     # Slide setup
     def create_blank_slide(self, prs):
-        # Select slide layout and create a new slide
+        """Create blank power point slide.
+
+        Selects a slide layout from avoialable power point options and
+        adds a new slide with that layout to the passed instance of
+        :param:*presenation*
+
+        :param prs: initialized *presentation* instance
+        :type prs: pptx.Presentation
+        :return: returns *slide* object
+        :rtype: `object`
+        """
         blank_slide_layout = prs.slide_layouts[6]
         slide = prs.slides.add_slide(blank_slide_layout)
         return slide
 
-    def create_platform_textbox(self, slide, platform: str):
+    def create_platform_textbox(self, slide: object, platform: str) -> None:
+        """Create a textbox for a social platform.
+
+        Create a texbox for a passed :param:platform. Platform is a
+        single string
+
+        :param slide: slide object
+        :param platform: name of social media platform
+        :type prs: object
+        :type platform: str
+        """
         # Text box positioning and size definitions
         left = Inches(0.25)
         top = Inches(0.25)
@@ -42,6 +71,7 @@ class PowerPointGenerator:
         normal_run.text = platform
 
     def create_account_textbox(self, slide, account: str):
+        """Creaete a textbox for a social account."""
         # Text box positioning and size definitions
         left = Inches(0.25)
         top = Inches(0.75)
@@ -62,6 +92,7 @@ class PowerPointGenerator:
         normal_run.text = account
 
     def create_country_textbox(self, slide, country: str):
+        """Create textbox foor country."""
         # Text box positioning and size definitions
         left = Inches(5.25)
         top = Inches(0.25)
@@ -82,6 +113,7 @@ class PowerPointGenerator:
         normal_run.text = country
 
     def create_audience_textbox(self, slide, audience: str):
+        """Create textbox for audience."""
         # Text box positioning and size definitions
         left = Inches(5.25)
         top = Inches(0.75)
@@ -102,6 +134,7 @@ class PowerPointGenerator:
         normal_run.text = audience
 
     def create_social_copy_textbox(self, slide, social_copy: str):
+        """Create textbox for social copy."""
         # Text box positioning and size definitions
         left = Inches(0.25)
         top = Inches(1.65)
@@ -123,6 +156,7 @@ class PowerPointGenerator:
         p2.text = social_copy
 
     def create_link_textbox(self, slide, link: str):
+        """Create textbox for link."""
         # Text box positioning and size definitions
         left = Inches(5.25)
         top = Inches(1.65)
@@ -145,6 +179,7 @@ class PowerPointGenerator:
         hyperlink.address = link
 
     def create_creative_asset_textbox(self, slide):
+        """Create creative asset textbox as default."""
         # Text box positioning and size definitions
         left = Inches(5.25)
         top = Inches(2.55)
@@ -168,45 +203,39 @@ class PowerPointGenerator:
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
         current_dir = path.abspath(getcwd())
 
-        #! Development paths - not to be used in production
-        if path.isdir("api/videos") == False:
+        if path.isdir("api/videos") is False:
             mkdir("api/videos")
-        if path.isdir("api/images") == False:
+        if path.isdir("api/images") is False:
             mkdir("api/images")
-        #! Production paths - to be used in production
-        # if path.isdir("app/videos") == False:
-        #     mkdir("app/videos")
-        # if path.isdir("app/images") == False:
-        #     mkdir("app/images")
 
-        #! Development paths - not to be used in production
         if file_extension in accepted_image_types:
             chdir("api/images")
             cached_file_path = path.abspath(filename)
         elif file_extension in accepted_video_types:
             chdir("api/videos")
             cached_file_path = path.abspath(filename)
-        #! Production paths - to be used in production
-        # if file_extension in accepted_image_types:
-        #     chdir("app/images")
-        #     cached_file_path = path.abspath(filename)
-        # elif file_extension in accepted_video_types:
-        #     chdir("app/videos")
-        #     cached_file_path = path.abspath(filename)
 
         data = requests.get(link_to_asset)
-        # Todo: Add try block here to catch exceptions
+
         with open(cached_file_path, "wb") as f:
             f.write(data.content)
             chdir(current_dir)
         return cached_file_path
 
-    # ? --- Use context manager to run this function to delete asset once added? ---
+    # Use context manager to run this function to delete asset once added?
     def insert_creative_asset(self, slide, path_to_asset: str):
         # Add creative asset file
         filename = path.basename(path_to_asset)
         file_extension = filename.split(".")[1]
-        accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic", "pdf"]
+        accepted_image_types = [
+            "jpg",
+            "png",
+            "gif",
+            "raw",
+            "svg",
+            "heic",
+            "pdf",
+        ]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
         if file_extension in accepted_image_types:
             # Creative asset positioning and size definitions
@@ -222,17 +251,9 @@ class PowerPointGenerator:
             height = Inches(3.1)
             slide.shapes.add_movie(path_to_asset, left, top, width, height)
 
-    # Todo: Create crud operations for handling cached image assets
-
-    # Main function that runs script
-
-    def create_presentation(self):
-        # Create a presentation
-        prs = Presentation()
-        return prs
-
     def create_slide(self, prs, post_data: dict) -> Union[str, None]:
-        """Creates a blank slide and adds the elements required for compliance to it
+        """
+        Creates a blank slide and adds the elements required for compliance to it.
 
         Args:
             prs (Type[Presentation]): _description_
@@ -241,8 +262,8 @@ class PowerPointGenerator:
         # Create blank slide
         slide = self.create_blank_slide(prs)
 
-        # Todo: Use strategy pattern to create different slide layouts for organic and paid
-        # Todo: Decide how to handle key error exceptions when data isn't entered
+        # Todo: Use strategy pattern - slide layouts for organic and paid
+        # Todo: How to handle key error exceptions when data isn't entered
         try:
             # Add platform element to slide
             self.create_platform_textbox(slide, post_data["platform"])
@@ -297,9 +318,21 @@ if __name__ == "__main__":
                         "size": 12942,
                         "type": "image/jpeg",
                         "thumbnails": {
-                            "small": {"url": "https://dl.airtable.com/.attachmentThumbnails/f78da1a12ab9c9be87b9d279b091fa7f/a25ae696", "width": 69, "height": 36},
-                            "large": {"url": "https://dl.airtable.com/.attachmentThumbnails/f9ddf156ea2c891522b9c44fc760bb8e/a37f3063", "width": 375, "height": 196},
-                            "full": {"url": "https://dl.airtable.com/.attachmentThumbnails/6df0d1773d8d33b165c104e000de27bc/4b08459b", "width": 3000, "height": 3000},
+                            "small": {
+                                "url": "https://dl.airtable.com/.attachmentThumbnails/f78da1a12ab9c9be87b9d279b091fa7f/a25ae696",
+                                "width": 69,
+                                "height": 36,
+                            },
+                            "large": {
+                                "url": "https://dl.airtable.com/.attachmentThumbnails/f9ddf156ea2c891522b9c44fc760bb8e/a37f3063",
+                                "width": 375,
+                                "height": 196,
+                            },
+                            "full": {
+                                "url": "https://dl.airtable.com/.attachmentThumbnails/6df0d1773d8d33b165c104e000de27bc/4b08459b",
+                                "width": 3000,
+                                "height": 3000,
+                            },
                         },
                     },
                 ],
@@ -321,9 +354,21 @@ if __name__ == "__main__":
                         "size": 16674,
                         "type": "image/jpeg",
                         "thumbnails": {
-                            "small": {"url": "https://dl.airtable.com/.attachmentThumbnails/53863b92c733d492ba932f080333eae7/c7c48295", "width": 69, "height": 36},
-                            "large": {"url": "https://dl.airtable.com/.attachmentThumbnails/eacadd4a1be4b00ebb6a6a8de5595318/44ce87d9", "width": 375, "height": 196},
-                            "full": {"url": "https://dl.airtable.com/.attachmentThumbnails/42487d29d653e354e01a767695345ea6/4952131f", "width": 3000, "height": 3000},
+                            "small": {
+                                "url": "https://dl.airtable.com/.attachmentThumbnails/53863b92c733d492ba932f080333eae7/c7c48295",
+                                "width": 69,
+                                "height": 36,
+                            },
+                            "large": {
+                                "url": "https://dl.airtable.com/.attachmentThumbnails/eacadd4a1be4b00ebb6a6a8de5595318/44ce87d9",
+                                "width": 375,
+                                "height": 196,
+                            },
+                            "full": {
+                                "url": "https://dl.airtable.com/.attachmentThumbnails/42487d29d653e354e01a767695345ea6/4952131f",
+                                "width": 3000,
+                                "height": 3000,
+                            },
                         },
                     }
                 ],
@@ -335,4 +380,5 @@ if __name__ == "__main__":
     for post in dummy_data["posts"]:
         generator.create_slide(prs, post)
     generator.save_ppt(prs, dummy_data["group_name"])
+
     print("ppt created")
