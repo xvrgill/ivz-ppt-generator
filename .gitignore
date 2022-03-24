@@ -99,3 +99,7 @@ cython_debug/
 ### Custom ###
 .DS_Store
 env
+*.http
+api/power_points/
+api/videos/
+api/images/

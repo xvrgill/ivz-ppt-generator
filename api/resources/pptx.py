@@ -1,8 +1,6 @@
 """Resource that generates ppt from post group."""
-from flask import send_file
 from flask_restful import Resource
 from os import path, mkdir
-from typing import List, Optional
 from api.context_managers.ppt_cm import PPTContextManager
 from api.models.post_key_mappings import post_key_mappings as pkm
 from scripts.ppt_generator import PowerPointGenerator
@@ -11,38 +9,9 @@ from api.resources.post import Post
 
 
 class PPT(Resource):
-    """
-    Class that defines the methods for the route that gnerates power points.
+    """Route that generates powerpoint.
 
-    Parameters
-    ----------
-    first : array_like
-        the 1st param name `first`
-    second :
-        the 2nd param
-    third : {'value', 'other'}, optional
-        the 3rd param, by default 'value'
-
-    Returns
-    -------
-    string
-        a value in a string
-
-    Raises
-    ------
-    KeyError
-        when a key error
-    OtherError
-        when an other error
-
-    Examples
-    --------
-    These are written in doctest format, and should illustrate how to
-    use the function.
-
-    >>> a=[1,2,3]
-    >>> print [x + 3 for x in a]
-    [4, 5, 6]
+    Methods available: `get`
     """
 
     def get(self, id):
@@ -72,25 +41,35 @@ class PPT(Resource):
             updated_post_data = {(pkm[k] if k in pkm else k): v for k, v in post_data["fields"].items()}
             ppt_data["posts"].append(updated_post_data)
 
+        # Define power point parameters
+        ppt_filename = f'{ppt_data["group_name"]}'
+        posts = ppt_data["posts"]
+
         # Create the powerpoint with the collected data
-        ppt = PowerPointGenerator()
-        prs = ppt.create_presentation()
-        asset_paths: List[Optional[str]] = list()
-        for post in ppt_data["posts"]:
-            asset_path = ppt.create_slide(prs, post)
-            if asset_path and (asset_path.split("/")[-1] not in asset_paths):
-                asset_paths.append(asset_path.split("/")[-1])
+        ppt = PowerPointGenerator(posts, ppt_filename)
 
-        ppt_filename = f'{ppt_data["group_name"]}.pptx'
+        # run generator
+        ppt.run()
 
-        # Use context manager to save ppt and remove associated assets
-        if not path.isdir("api/power_points"):
-            mkdir("api/power_points")
-        with PPTContextManager(prs, ppt_filename) as f:
-            f.save(f"api/power_points/{ppt_filename}")
+        # send the powerpoint file to client
 
-            return send_file(
-                f"power_points/{ppt_filename}",
-                as_attachment=True,
-                attachment_filename=ppt_filename,
-            )
+        #! probably no longer need asset paths
+        # asset_paths: List[Optional[str]] = list()
+        # for post in ppt_data["posts"]:
+        #     asset_path = ppt.create_slide(prs, post)
+        #     if asset_path and (asset_path.split("/")[-1] not in asset_paths):
+        #         asset_paths.append(asset_path.split("/")[-1])
+
+        # ppt_filename = f'{ppt_data["group_name"]}.pptx'
+
+        # # Use context manager to save ppt and remove associated assets
+        # if not path.isdir("api/power_points"):
+        #     mkdir("api/power_points")
+        # with PPTContextManager(prs, ppt_filename) as f:
+        #     f.save(f"api/power_points/{ppt_filename}")
+
+        #     return send_file(
+        #         f"power_points/{ppt_filename}",
+        #         as_attachment=True,
+        #         attachment_filename=ppt_filename,
+        #     )

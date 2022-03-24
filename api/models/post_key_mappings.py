@@ -1,5 +1,6 @@
 post_key_mappings = {
     "Audience": "audience",
+    "Paid Headline": "paid_headline",
     "Copy": "copy",
     "Copy Char Count": "copy_char_count",
     "Country": "country",
@@ -12,5 +13,5 @@ post_key_mappings = {
     "Publish Date": "publish_date",
     "Shortened Link": "link",
     "Social Account": "account",
-    "Creative Asset(s)": "creative_asset",
+    "Creative Asset(s)": "creative",
 }
