@@ -33,9 +33,8 @@ class Developmentconfig:
     # AWS_KEY_ID = environ.get("AWS_KEY_ID")
 
 
-# Production Configuration
+# Heroku Local Configuration
 class HerokuLocalConfig:
-    # ROOT_URL = "https://ivz-ppt-generator.herokuapp.com"
     ROOT_URL = "http://0.0.0.0:5000"
     AIR_TABLE_API_KEY = environ.get("AIR_TABLE_API_KEY")
     AIR_TABLE_BASE_ID = environ.get("AIR_TABLE_BASE_ID")
@@ -44,7 +43,8 @@ class HerokuLocalConfig:
     SECRET_KEY = environ.get("FLASK_SECRET_KEY")
 
 
-class HerokuLocalConfig:
+# Heroku Production Configuration
+class HerokuProductionConfig:
     ROOT_URL = "https://ivz-ppt-generator.herokuapp.com"
     AIR_TABLE_API_KEY = environ.get("AIR_TABLE_API_KEY")
     AIR_TABLE_BASE_ID = environ.get("AIR_TABLE_BASE_ID")

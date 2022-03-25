@@ -5,7 +5,7 @@ from flask_restful import Api
 # * Reminder: To use config variables you can import app from another file and use the code - app.config['SOME_VARIABLE']
 
 app = Flask(__name__)
-app.config.from_object("config.Developmentconfig")
+app.config.from_object("config.HerokuProductionConfig")
 api = Api(app)
 CORS(app)
 

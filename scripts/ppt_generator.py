@@ -74,10 +74,9 @@ class PowerPointGenerator:
         # layout_strategy.build_layout()
 
     def save_ppt(self) -> None:
-        # reformat slashes in filename if they exist - will throw 'file not found error' if saved this way
-        # todo: use ppt context manager to implement tear down logic
-        # if not path.isdir("api/powerpoints"):
-        #     mkdir("api/power_points")
+        # todo: reformat slashes in filename if they exist - will throw 'file not found error' if saved this way
+        if not path.isdir("api/power_points"):
+            mkdir("api/power_points")
         self.prs.save(f"api/power_points/{self.ppt_filename}.pptx")
 
     def build_and_save(self):
@@ -92,6 +91,10 @@ class PowerPointGenerator:
     def run(self):
         self.build_and_save()
         self.save_ppt()
+
+    def send_to_client(self) -> Response:
+        with PPTContextManager(self.prs, f"{self.ppt_filename}.pptx"):
+            return send_file(f"power_points/{self.ppt_filename}.pptx", as_attachment=True, attachment_filename=f"{self.ppt_filename}.pptx")
 
     # #! replace contents of method with strategy logic
     # #! this will run in a for loop - construct as if only one post is passed in at a time [May not work]

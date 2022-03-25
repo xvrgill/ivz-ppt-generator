@@ -24,7 +24,6 @@ class PPTContextManager:
 
     def __enter__(self) -> object:
         """Make presentation object accessible in context."""
-        # maybe use a tempfile here instead of writing to disk?
         return self.presentation
 
     def __exit__(self, exc_type, exec_val, traceback) -> None:
