@@ -17,8 +17,6 @@ class SlideLayout(ABC):
         self.paid_v_organic = post_data["paid_v_organic"]
         self.audience: str = post_data["audience"]
         self.publish_date: str = self.format_publish_date(post_data["publish_date"])
-        #! paid headline won't always be available in post data
-        #! self.paid_headline = post_data["paid_headline"]
         self.social_copy: str = post_data["copy"]
         self.link: str = post_data["link"]
 
