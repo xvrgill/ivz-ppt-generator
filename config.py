@@ -8,7 +8,7 @@ load_dotenv(path.join(basedir, ".env"))
 
 
 # TODO: Use dataclass to avoid 'too few arguements lint error'
-class Developmentconfig:
+class DevelopmentConfig:
     # Air Table API
     AIR_TABLE_API_KEY = environ.get("AIR_TABLE_API_KEY")
     AIR_TABLE_BASE_ID = environ.get("AIR_TABLE_BASE_ID")

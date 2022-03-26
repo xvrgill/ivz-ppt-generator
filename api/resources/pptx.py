@@ -30,6 +30,7 @@ class PPT(Resource):
         post_group_response = PostGroup().get(id)
         post_group_data = post_group_response.json
 
+        # todoo: move post data to dataclass
         ppt_data["group_name"] = post_group_data["fields"]["Name"]
         ppt_data["posts"] = list()
 
@@ -50,17 +51,10 @@ class PPT(Resource):
         ppt = PowerPointGenerator(posts, ppt_filename)
 
         # run generator
-        ppt.run()
+        ppt.build_and_save()
 
         # send the powerpoint file to client
         return ppt.send_to_client()
-
-        # Working!
-        # return send_file(
-        #     f"power_points/{ppt_filename}.pptx",
-        #     as_attachment=True,
-        #     attachment_filename=f"power_points/{ppt_filename}.pptx",
-        # )
 
         #! probably no longer need asset paths
         # asset_paths: List[Optional[str]] = list()
