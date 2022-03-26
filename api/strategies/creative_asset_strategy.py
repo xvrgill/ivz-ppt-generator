@@ -1,12 +1,10 @@
 from abc import ABC, abstractmethod
-from pptx.util import Inches
+from pptx.util import Inches, Pt
 from os import path, chdir, getcwd, mkdir
 import requests
 from flask import abort
 
 # todo: add type hints everywhere
-
-
 class CreativeAssetStrategy(ABC):
     """Base class for creative asset strategies."""
 
@@ -88,6 +86,7 @@ class SingleAsset(CreativeAssetStrategy):
         bold_run.text = "Creative Asset:"
         bold_run_font = bold_run.font
         bold_run_font.bold = True
+        bold_run_font.size = Pt(14)
 
     def insert_creative(self, path_to_asset: str):
         # Add creative asset file
