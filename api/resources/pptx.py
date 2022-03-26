@@ -1,8 +1,5 @@
 """Resource that generates ppt from post group."""
 from flask_restful import Resource
-from flask import send_file
-from os import path, mkdir
-from api.context_managers.ppt_cm import PPTContextManager
 from api.models.post_key_mappings import post_key_mappings as pkm
 from scripts.ppt_generator import PowerPointGenerator
 from api.resources.post_group import PostGroup

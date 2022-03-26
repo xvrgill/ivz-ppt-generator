@@ -1,8 +1,9 @@
 """Script that contains rudamentary logic for ppt generator."""
 
 from pptx import Presentation
-from flask import Response, abort, send_file
-from api.strategies.slide_layout_strategy import Organic
+from flask import Response, send_file
+from flask_restful import abort
+from api.strategies.slide_layout_strategy import Organic, Paid
 from api.context_managers.ppt_cm import PPTContextManager
 from os import mkdir, path
 
@@ -34,25 +35,24 @@ class PowerPointGenerator:
         for post in self.posts:
             try:
                 paid_v_organic: str = post["paid_v_organic"]
-                assert paid_v_organic == "organic" or "paid"
-            except (KeyError):
-                return abort(500, "No paid or organic status supplied for a post in this post group. Ensure that all posts are identified as either paid or organic.")
-            except (AssertionError):
+                assert paid_v_organic == "Organic" or "Paid"
+            except KeyError:
+                return abort(500, message="No paid or organic status supplied for a post in this post group. Ensure that all posts are identified as either paid or organic.")
+            except AssertionError:
                 return abort(
                     500,
-                    f"Unable to process a post with Paid v Organic status of {paid_v_organic}. Ensure that this field is either paid or organic. If a new option has been added to Air Table, please contact the system administrator to enable processing of the new option {paid_v_organic}",
+                    message=f"Unable to process a post with Paid v Organic status of {paid_v_organic}. Ensure that this field is either paid or organic. If a new option has been added to Air Table, please contact the system administrator to enable processing of the new option {paid_v_organic}",
                 )
 
             # choose strategy - must be either paid or organic now that we validated with try block
-            if paid_v_organic == "organic":
+            if paid_v_organic == "Organic":
                 # implement organic strategy here
                 layout_strategy = Organic(self.prs, post)
                 # use strategy to create layout
                 layout_strategy.build_layout()
                 # return layout_strategy.presentation
-            else:
-                # todo: implement paid strategy here
-                layout_strategy = Organic(self.prs, post)
+            elif paid_v_organic == "Paid":
+                layout_strategy = Paid(self.prs, post)
                 # use paid to create layout
                 layout_strategy.build_layout()
 

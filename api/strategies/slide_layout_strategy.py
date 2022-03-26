@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-import re
 from datetime import datetime
+from flask_restful import abort
 from pptx.util import Inches, Pt
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.dml.color import RGBColor
@@ -20,8 +20,8 @@ class SlideLayout(ABC):
         self.social_copy: str = post_data["copy"]
         self.link: str = post_data["link"]
 
-    @classmethod
-    def format_publish_date(self, publish_date: str) -> str:
+    @staticmethod
+    def format_publish_date(publish_date: str) -> str:
         """Remove time from ISO formatted string."""
 
         # datetime implementation
@@ -66,13 +66,13 @@ class SlideLayout(ABC):
         bold_run_font = bold_run.font
         bold_run_font.bold = True
         bold_run_font.size = Pt(14)
-        bold_run_font.color = RGBColor(255, 255, 255)
+        bold_run_font.color.rgb = RGBColor(255, 255, 255)
         # Normal run
         normal_run = p.add_run()
         normal_run.text = self.platform
         normal_run_font = normal_run.font
         normal_run_font.size = Pt(14)
-        normal_run_font.color = RGBColor(255, 255, 255)
+        normal_run_font.color.rgb = RGBColor(255, 255, 255)
 
     def create_country_textbox(self) -> None:
         """Create textbox for country."""
@@ -93,11 +93,13 @@ class SlideLayout(ABC):
         bold_run_font = bold_run.font
         bold_run_font.bold = True
         bold_run_font.size = Pt(14)
+        bold_run_font.color.rgb = RGBColor(255, 255, 255)
         # Normal run
         normal_run = p.add_run()
         normal_run.text = self.country
         normal_run_font = normal_run.font
         normal_run_font.size = Pt(14)
+        normal_run_font.color.rgb = RGBColor(255, 255, 255)
 
     def create_paid_v_organic_textbox(self) -> None:
         """Create textbox for designation of paid or organic."""
@@ -118,11 +120,13 @@ class SlideLayout(ABC):
         bold_run_font = bold_run.font
         bold_run_font.bold = True
         bold_run_font.size = Pt(14)
+        bold_run_font.color.rgb = RGBColor(255, 255, 255)
         # Normal run
         normal_run = p.add_run()
         normal_run.text = self.paid_v_organic
         normal_run_font = normal_run.font
         normal_run_font.size = Pt(14)
+        normal_run_font.color.rgb = RGBColor(255, 255, 255)
 
     def create_account_textbox(self) -> None:
         """Create a textbox for a social account."""
@@ -143,11 +147,13 @@ class SlideLayout(ABC):
         bold_run_font = bold_run.font
         bold_run_font.bold = True
         bold_run_font.size = Pt(14)
+        bold_run_font.color.rgb = RGBColor(255, 255, 255)
         # Normal run
         normal_run = p.add_run()
         normal_run.text = self.account
         normal_run_font = normal_run.font
         normal_run_font.size = Pt(14)
+        normal_run_font.color.rgb = RGBColor(255, 255, 255)
 
     def create_audience_textbox(self) -> None:
         """Create textbox for audience."""
@@ -168,11 +174,13 @@ class SlideLayout(ABC):
         bold_run_font = bold_run.font
         bold_run_font.bold = True
         bold_run_font.size = Pt(14)
+        bold_run_font.color.rgb = RGBColor(255, 255, 255)
         # Normal run
         normal_run = p.add_run()
         normal_run.text = self.audience
         normal_run_font = normal_run.font
         normal_run_font.size = Pt(14)
+        normal_run_font.color.rgb = RGBColor(255, 255, 255)
 
     def create_publish_date_textbox(self) -> None:
         """Create textbox for publish date."""
@@ -193,11 +201,13 @@ class SlideLayout(ABC):
         bold_run_font = bold_run.font
         bold_run_font.bold = True
         bold_run_font.size = Pt(14)
+        bold_run_font.color.rgb = RGBColor(255, 255, 255)
         # Normal run
         normal_run = p.add_run()
         normal_run.text = self.publish_date
         normal_run_font = normal_run.font
         normal_run_font.size = Pt(14)
+        normal_run_font.color.rgb = RGBColor(255, 255, 255)
 
     @abstractmethod
     def create_social_copy_textbox(self) -> None:
@@ -327,76 +337,131 @@ class Organic(SlideLayout):
         self.add_creative_assets()
 
 
-# class Paid(SlideLayout):
-#     """Strategy for creating paid post slide layout."""
+class Paid(SlideLayout):
+    """Strategy for creating paid post slide layout."""
 
-#     def __init__(self, presentation: object, post_data: dict) -> None:
-#         super().__init__(presentation, post_data)
-#         # add paid healdine property
-#         self.paid_headline = post_data["paid_headline"]
+    def __init__(self, presentation: object, post_data: dict) -> None:
+        super().__init__(presentation, post_data)
 
-#     # new paid headline copy section - social copy moved down to accomodate
-#     def create_paid_headline_textbox(self) -> None:
-#         """Create textbox for social copy."""
-#         # Text box positioning and size definitions
-#         left = Inches(0.25)
-#         top = Inches(1.65)
-#         width = Inches(4.5)
-#         height = Inches(4.64)
-#         # Textbox setup
-#         slide = self.detail_slide
-#         account_tbox = slide.shapes.add_textbox(left, top, width, height)
-#         account_tf = account_tbox.text_frame
-#         account_tf.word_wrap = True
-#         # Adding bold text and normal text in separate paragraphs
-#         p1 = account_tf.paragraphs[0]
-#         # Bold paragraph
-#         run = p1.add_run()
-#         run.text = "Copy:\n"
-#         font = run.font
-#         font.bold = True
-#         # Normal paragraph
-#         p2 = account_tf.add_paragraph()
-#         p2.text = self.social_copy
+    @property
+    def paid_headline(self) -> str:
+        """Paid headline property for paid posts."""
+        try:
+            return self.post_data["paid_headline"]
+        except KeyError:
+            return abort(500, message="A paid post in this post group does not contain a paid headline. Please review each paid post associated with this group in Air Table.")
 
-#     def create_social_copy_textbox(self) -> None:
-#         """Create textbox for social copy."""
-#         # todo: update this based on paid specifications
-#         # Text box positioning and size definitions
-#         left = Inches(0.25)
-#         top = Inches(1.65)
-#         width = Inches(4.5)
-#         height = Inches(4.64)
-#         # Textbox setup
-#         slide = self.detail_slide
-#         account_tbox = slide.shapes.add_textbox(left, top, width, height)
-#         account_tf = account_tbox.text_frame
-#         account_tf.word_wrap = True
-#         # Adding bold text and normal text in separate paragraphs
-#         p1 = account_tf.paragraphs[0]
-#         # Bold paragraph
-#         run = p1.add_run()
-#         run.text = "Copy:\n"
-#         p1_font = run.font
-#         p1_font.bold = True
-#         p1_font.size = Pt(14)
-#         # Normal paragraph
-#         p2 = account_tf.add_paragraph()
-#         p2.text = self.social_copy
-#         p2.font.size = Pt(14)
+    # create background rectangle for detail section
+    def create_detail_background(self) -> None:
+        slide = self.detail_slide
+        left = top = Inches(0)
+        width = Inches(10)
+        height = Inches(1.33)
+        rectangle = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, left, top, width, height)
+        rectangle_fill = rectangle.fill
+        rectangle_fill.solid()
+        rectangle_fill.fore_color.rgb = RGBColor(0, 176, 80)
+        rectangle_outline = rectangle.line
+        rectangle_outline.color.rgb = RGBColor(0, 176, 80)
+        rectangle.shadow.inherit = False
 
-#     # todo: implement build layout method
-#     def build_layout(self) -> None:
-#         # create blank slide per normal
-#         self.create_blank_slide()
-#         # create all textboxes
-#         self.create_platform_textbox()
-#         self.create_country_textbox()
-#         self.create_account_textbox()
-#         self.create_audience_textbox()
-#         self.create_paid_headline_textbox()
-#         self.create_social_copy_textbox()
-#         self.create_link_textbox()
-#         # todo: add paid/organic type and tentative publish date textboxes here
-#         # add creative asset
-#         self.add_creative_assets()
+    # new paid headline copy section - social copy moved down to accomodate
+    def create_paid_headline_textbox(self) -> None:
+        """Create textbox for social copy."""
+        # Text box positioning and size definitions
+        left = Inches(0.25)
+        top = Inches(1.76)
+        width = Inches(4.5)
+        height = Inches(0.81)
+        # Textbox setup
+        slide = self.detail_slide
+        account_tbox = slide.shapes.add_textbox(left, top, width, height)
+        account_tf = account_tbox.text_frame
+        account_tf.word_wrap = True
+        # Adding bold text and normal text in separate paragraphs
+        p1 = account_tf.paragraphs[0]
+        # Bold paragraph
+        run = p1.add_run()
+        run.text = "Paid Headline:\n"
+        p1_font = run.font
+        p1_font.bold = True
+        p1_font.size = Pt(14)
+        # Normal paragraph
+        p2 = account_tf.add_paragraph()
+        p2.text = self.paid_headline
+        p2_font = p2.font
+        p2_font.size = Pt(14)
+
+    def create_social_copy_textbox(self) -> None:
+        """Create textbox for social copy."""
+        # todo: update this based on paid specifications
+        # Text box positioning and size definitions
+        left = Inches(0.25)
+        top = Inches(3.8)
+        width = Inches(4.5)
+        height = Inches(3.1)
+        # Textbox setup
+        slide = self.detail_slide
+        account_tbox = slide.shapes.add_textbox(left, top, width, height)
+        account_tf = account_tbox.text_frame
+        account_tf.word_wrap = True
+        # Adding bold text and normal text in separate paragraphs
+        p1 = account_tf.paragraphs[0]
+        # Bold paragraph
+        run = p1.add_run()
+        run.text = "Copy:\n"
+        p1_font = run.font
+        p1_font.bold = True
+        p1_font.size = Pt(14)
+        # Normal paragraph
+        p2 = account_tf.add_paragraph()
+        p2.text = self.social_copy
+        p2.font.size = Pt(14)
+
+    def create_link_textbox(self) -> None:
+        """Create textbox for link."""
+        # Text box positioning and size definitions
+        left = Inches(5.25)
+        top = Inches(1.65)
+        width = Inches(4.39)
+        height = Inches(0.4)
+        # Textbox setup
+        slide = self.detail_slide
+        account_tbox = slide.shapes.add_textbox(left, top, width, height)
+        account_tf = account_tbox.text_frame
+        # Adding bold text and normal text in single paragraph with runs
+        p = account_tf.paragraphs[0]
+        # Bold run
+        bold_run = p.add_run()
+        bold_run.text = "Link: "
+        bold_run_font = bold_run.font
+        bold_run_font.bold = True
+        bold_run_font.size = Pt(14)
+        # Normal run
+        # todo: if there is no link, don't add a hyperlink address
+        normal_run = p.add_run()
+        normal_run.text = self.link
+        hyperlink = normal_run.hyperlink
+        hyperlink.address = self.link
+        normal_run_font = normal_run.font
+        normal_run_font.size = Pt(14)
+
+    # todo: implement build layout method
+    def build_layout(self) -> None:
+        # create blank slide per normal
+        self.create_blank_slide()
+        # create paid background rectangle for details
+        self.create_detail_background()
+        # create all textboxes
+        self.create_platform_textbox()
+        self.create_country_textbox()
+        self.create_account_textbox()
+        self.create_audience_textbox()
+        self.create_paid_v_organic_textbox()
+        self.create_publish_date_textbox()
+        self.create_paid_headline_textbox()
+        self.create_social_copy_textbox()
+        self.create_link_textbox()
+        # todo: add paid/organic type and tentative publish date textboxes here
+        # add creative asset
+        self.add_creative_assets()
