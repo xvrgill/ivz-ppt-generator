@@ -26,13 +26,6 @@ class SlideLayout(ABC):
     def format_publish_date(self, publish_date: str) -> str:
         """Remove time from ISO formatted string."""
 
-        # working - regex implementation
-        # dt_string = publish_date
-        # re_pattern = re.compile(r"([\S]+)T")
-        # match = re_pattern.match(dt_string)
-        # result = match.group(1)
-        # return result
-
         # datetime implementation
         publish_dt: datetime = datetime.strptime(publish_date, r"%Y-%m-%dT%H:%M:%S.%fZ").date()
         dt_str: str = publish_dt.strftime(r"%m/%d/%Y")
