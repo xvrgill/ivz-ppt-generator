@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from ctypes import Array
-from numpy import array
+from array import array
 from pptx.util import Inches, Pt
 from os import path, chdir, getcwd, mkdir
 import requests
@@ -188,7 +188,7 @@ class AssetTrio(CreativeAssetStrategy):
         asset_2 = [3.48, 5.09, 2.74, 1.83]
         asset_3 = [6.54, 5.09, 2.74, 1.83]
 
-        return array([asset_1, asset_2, asset_3])
+        return array("i", [asset_1, asset_2, asset_3])
 
     # @staticmethod
     def extract_filename(self, asset_details: dict) -> str:
