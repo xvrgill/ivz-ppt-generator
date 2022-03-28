@@ -1,6 +1,4 @@
 from abc import ABC, abstractmethod
-from ctypes import Array
-from array import array
 from pptx.util import Inches, Pt
 from os import path, chdir, getcwd, mkdir
 import requests
@@ -180,7 +178,7 @@ class AssetTrio(CreativeAssetStrategy):
 
     #! using 2d matrices to reduce time complexity
     @property
-    def size_and_position_matrix(self) -> Array:
+    def size_and_position_matrix(self) -> list:
         # need left, top, width, and height
         # need three rows
         #! may only want to specify width here to allow for vertical aspect ratios automatically
@@ -188,7 +186,7 @@ class AssetTrio(CreativeAssetStrategy):
         asset_2 = [3.48, 5.09, 2.74, 1.83]
         asset_3 = [6.54, 5.09, 2.74, 1.83]
 
-        return array("l", [asset_1, asset_2, asset_3])
+        return [asset_1, asset_2, asset_3]
 
     # @staticmethod
     def extract_filename(self, asset_details: dict) -> str:
