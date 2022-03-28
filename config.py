@@ -27,6 +27,7 @@ class HerokuLocalConfig:
 
 # Heroku Production Configuration
 class HerokuProductionConfig:
+    # config has issues
     AIR_TABLE_API_KEY = environ.get("AIR_TABLE_API_KEY")
     AIR_TABLE_BASE_ID = environ.get("AIR_TABLE_BASE_ID")
     POST_GROUPS_TABLE = environ.get("POST_GROUPS_TABLE")
