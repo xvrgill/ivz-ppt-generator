@@ -4,7 +4,7 @@ from flask_restful import abort
 from pptx.util import Inches, Pt
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.dml.color import RGBColor
-from api.strategies.creative_asset_strategy import SingleAsset, MultipleAssets
+from api.strategies.creative_asset_strategy import SingleAsset, AssetTrio
 
 
 class SlideLayout(ABC):
@@ -221,23 +221,23 @@ class SlideLayout(ABC):
     def add_creative_assets(self) -> None:
 
         # use creative asset strategy here
+        # todo: use math to calculate some of these sizes and positions
         if "creative" in self.post_data.keys():
             creative_asset_data: list = self.post_data["creative"]
             creative_asset_count = len(creative_asset_data)
             if creative_asset_count == 1:
                 creative_strategy = SingleAsset(self.detail_slide, creative_asset_data)
                 creative_strategy.build_asset_layout()
-
-            elif (creative_asset_count > 1) and (creative_asset_count <= 12):
-                # for asset in creative_asset_data:
-                #     asset_counter = 1
-                # InsertMultipleAssets(self.detail_slide, asset)
-                pass
-            else:
-                # handle outlier cases here - maybe with error when number of creative assets exceeds 12
-                pass
+            elif (creative_asset_count > 1) and (creative_asset_count <= 3):
+                creative_strategy = AssetTrio(self.detail_slide, creative_asset_data)
+                creative_strategy.build_asset_layout()
+            elif creative_asset_count > 3:
+                # handle asset counts above 3 here
+                creative_strategy = AssetTrio(self.detail_slide, creative_asset_data)
+                creative_strategy.build_asset_layout()
         else:
             # logic for posts with no creative asset
+            # todo: add textbox indicating no asset
             pass
 
     @abstractmethod
@@ -269,8 +269,8 @@ class Organic(SlideLayout):
         # Text box positioning and size definitions
         left = Inches(0.25)
         top = Inches(1.65)
-        width = Inches(4.5)
-        height = Inches(4.64)
+        width = Inches(9.55)
+        height = Inches(1.85)
         # Textbox setup
         slide = self.detail_slide
         account_tbox = slide.shapes.add_textbox(left, top, width, height)
@@ -370,8 +370,8 @@ class Paid(SlideLayout):
         """Create textbox for social copy."""
         # Text box positioning and size definitions
         left = Inches(0.25)
-        top = Inches(1.76)
-        width = Inches(4.5)
+        top = Inches(1.45)
+        width = Inches(9.55)
         height = Inches(0.81)
         # Textbox setup
         slide = self.detail_slide
@@ -397,9 +397,9 @@ class Paid(SlideLayout):
         # todo: update this based on paid specifications
         # Text box positioning and size definitions
         left = Inches(0.25)
-        top = Inches(3.8)
-        width = Inches(4.5)
-        height = Inches(3.1)
+        top = Inches(2.38)
+        width = Inches(9.55)
+        height = Inches(1.51)
         # Textbox setup
         slide = self.detail_slide
         account_tbox = slide.shapes.add_textbox(left, top, width, height)
@@ -421,10 +421,10 @@ class Paid(SlideLayout):
     def create_link_textbox(self) -> None:
         """Create textbox for link."""
         # Text box positioning and size definitions
-        left = Inches(5.25)
-        top = Inches(1.65)
-        width = Inches(4.39)
-        height = Inches(0.4)
+        left = Inches(0.33)
+        top = Inches(4.07)
+        width = Inches(9.31)
+        height = Inches(0.34)
         # Textbox setup
         slide = self.detail_slide
         account_tbox = slide.shapes.add_textbox(left, top, width, height)
