@@ -188,7 +188,7 @@ class AssetTrio(CreativeAssetStrategy):
         asset_2 = [3.48, 5.09, 2.74, 1.83]
         asset_3 = [6.54, 5.09, 2.74, 1.83]
 
-        return array("i", [asset_1, asset_2, asset_3])
+        return array("l", [asset_1, asset_2, asset_3])
 
     # @staticmethod
     def extract_filename(self, asset_details: dict) -> str:
