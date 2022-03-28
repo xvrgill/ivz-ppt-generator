@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from ctypes import Array
+from numpy import array
 from pptx.util import Inches, Pt
 from os import path, chdir, getcwd, mkdir
 import requests
 from flask_restful import abort
-import numpy as np
 
 # todo: add type hints everywhere
 class CreativeAssetStrategy(ABC):
@@ -184,11 +184,11 @@ class AssetTrio(CreativeAssetStrategy):
         # need left, top, width, and height
         # need three rows
         #! may only want to specify width here to allow for vertical aspect ratios automatically
-        image_1 = [0.42, 5.09, 2.74, 1.83]
-        image_2 = [3.48, 5.09, 2.74, 1.83]
-        image_3 = [6.54, 5.09, 2.74, 1.83]
+        asset_1 = [0.42, 5.09, 2.74, 1.83]
+        asset_2 = [3.48, 5.09, 2.74, 1.83]
+        asset_3 = [6.54, 5.09, 2.74, 1.83]
 
-        return np.array([image_1, image_2, image_3])
+        return array([asset_1, asset_2, asset_3])
 
     # @staticmethod
     def extract_filename(self, asset_details: dict) -> str:
