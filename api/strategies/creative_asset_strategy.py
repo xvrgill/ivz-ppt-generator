@@ -205,8 +205,9 @@ class AssetTrio(CreativeAssetStrategy):
         Downloads creative asset with `requests.get` and caches it in the
         `api/videos` or `api/images` folders depending on the asset's fiile extension.
         """
-
+        # fixed filename
         filename = asset_filename
+        print(filename)
         file_extension = filename.split(".")[1]
         # todo: make types a property of the base class
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
