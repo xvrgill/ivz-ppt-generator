@@ -24,7 +24,7 @@ class CreativeAssetStrategy(ABC):
         `api/videos` or `api/images` folders depending on the asset's fiile extension.
         """
         link_to_asset = creative_asset_details["url"]
-        filename = link_to_asset.split("/")[-1]
+        filename = creative_asset_details["filename"]
         file_extension = filename.split(".")[1]
         # todo: make types a property of the base class
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
@@ -42,6 +42,8 @@ class CreativeAssetStrategy(ABC):
         elif file_extension in accepted_video_types:
             chdir("api/videos")
             cached_file_path: str = path.abspath(filename)
+        else:
+            return abort(500, message="image not in accepted image types", extension=f"{file_extension}")
 
         data = requests.get(link_to_asset)
 
@@ -197,14 +199,14 @@ class AssetTrio(CreativeAssetStrategy):
         return filename.split(".")[1]
 
     # @staticmethod
-    def download_creative_asset(self, asset_url: str) -> str:
+    def download_creative_asset(self, asset_filename: str, asset_url: str) -> str:
         """Download creative asset from Air Table link and cache locally.
 
         Downloads creative asset with `requests.get` and caches it in the
         `api/videos` or `api/images` folders depending on the asset's fiile extension.
         """
 
-        filename = asset_url.split("/")[-1]
+        filename = asset_filename
         file_extension = filename.split(".")[1]
         # todo: make types a property of the base class
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
@@ -222,6 +224,8 @@ class AssetTrio(CreativeAssetStrategy):
         elif file_extension in accepted_video_types:
             chdir("api/videos")
             cached_file_path: str = path.abspath(filename)
+        else:
+            return abort(500, message="image not in accepted image types", extension=f"{file_extension}")
 
         data = requests.get(asset_url)
 
@@ -255,10 +259,11 @@ class AssetTrio(CreativeAssetStrategy):
 
         self.create_creative_asset_title_textbox()
         for index, asset in enumerate(self.creative_asset_data):
+            asset_filename = asset["filename"]
             asset_url = asset["url"]
             filename = self.extract_filename(asset)
             extension = self.extract_extension(filename)
-            cache_path = self.download_creative_asset(asset_url)
+            cache_path = self.download_creative_asset(asset_filename, asset_url)
             if extension in self.accepted_image_types:
                 self.add_creative_asset_image(cache_path, index)
             elif extension in self.accepted_video_types:

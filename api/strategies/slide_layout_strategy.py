@@ -238,7 +238,7 @@ class SlideLayout(ABC):
         else:
             # logic for posts with no creative asset
             # todo: add textbox indicating no asset
-            pass
+            abort(404, message="no creative asset detected")
 
     @abstractmethod
     def build_layout(self) -> None:
