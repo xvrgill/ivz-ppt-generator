@@ -106,7 +106,7 @@ class SingleAsset(CreativeAssetStrategy):
         filename = path.basename(path_to_asset)
         try:
             file_extension = filename.split(".")[1]
-        except:
+        except IndexError:
             return abort(
                 500,
                 message=f"Error in creative asset filename. Ensure all assets have an accepted file extension and contain no periods other than to denote the extension Ex: FBLITWT.jpg",
@@ -220,7 +220,7 @@ class AssetTrio(CreativeAssetStrategy):
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
         try:
             return filename.split(".")[1]
-        except:
+        except IndexError:
             return abort(
                 500,
                 message=f"Error in creative asset filename. Ensure all assets have an accepted file extension and contain no periods other than to denote the extension Ex: FBLITWT.jpg",
@@ -240,7 +240,7 @@ class AssetTrio(CreativeAssetStrategy):
         print(filename)
         try:
             file_extension = filename.split(".")[1]
-        except:
+        except IndexError:
             return abort(
                 500,
                 message=f"Error in creative asset filename. Ensure all assets have an accepted file extension and contain no periods other than to denote the extension Ex: FBLITWT.jpg",
