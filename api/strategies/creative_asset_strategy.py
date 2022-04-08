@@ -23,12 +23,24 @@ class CreativeAssetStrategy(ABC):
         Downloads creative asset with `requests.get` and caches it in the
         `api/videos` or `api/images` folders depending on the asset's fiile extension.
         """
-        link_to_asset = creative_asset_details["url"]
-        filename = creative_asset_details["filename"]
-        file_extension = filename.split(".")[1]
+
         # todo: make types a property of the base class
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
+
+        link_to_asset = creative_asset_details["url"]
+        filename = creative_asset_details["filename"]
+
+        try:
+            file_extension = filename.split(".")[1]
+        except:
+            return abort(
+                500,
+                message=f"Error in creative asset filename. Ensure all assets have an accepted file extension and contain no periods other than to denote the extension Ex: FBLITWT.jpg",
+                accepted_image_types=f"{accepted_image_types}",
+                accepted_video_types=f"{accepted_video_types}",
+            )
+
         current_dir = path.abspath(getcwd())
 
         if path.isdir("api/videos") is False:
@@ -92,8 +104,15 @@ class SingleAsset(CreativeAssetStrategy):
     def insert_creative(self, path_to_asset: str):
         # Add creative asset file
         filename = path.basename(path_to_asset)
-        file_extension = filename.split(".")[1]
-
+        try:
+            file_extension = filename.split(".")[1]
+        except:
+            return abort(
+                500,
+                message=f"Error in creative asset filename. Ensure all assets have an accepted file extension and contain no periods other than to denote the extension Ex: FBLITWT.jpg",
+                accepted_image_types=f"{accepted_image_types}",
+                accepted_video_types=f"{accepted_video_types}",
+            )
         # throw error if pdf extension
         if file_extension == "pdf":
             return abort(404, "pdf is not an accepted Asset type. Please convert PDF to JPG")
@@ -196,7 +215,18 @@ class AssetTrio(CreativeAssetStrategy):
 
     # @staticmethod
     def extract_extension(self, filename: str) -> str:
-        return filename.split(".")[1]
+        # todo: move to base class as properties
+        accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
+        accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
+        try:
+            return filename.split(".")[1]
+        except:
+            return abort(
+                500,
+                message=f"Error in creative asset filename. Ensure all assets have an accepted file extension and contain no periods other than to denote the extension Ex: FBLITWT.jpg",
+                accepted_image_types=f"{accepted_image_types}",
+                accepted_video_types=f"{accepted_video_types}",
+            )
 
     # @staticmethod
     def download_creative_asset(self, asset_filename: str, asset_url: str) -> str:
@@ -208,7 +238,15 @@ class AssetTrio(CreativeAssetStrategy):
         # fixed filename
         filename = asset_filename
         print(filename)
-        file_extension = filename.split(".")[1]
+        try:
+            file_extension = filename.split(".")[1]
+        except:
+            return abort(
+                500,
+                message=f"Error in creative asset filename. Ensure all assets have an accepted file extension and contain no periods other than to denote the extension Ex: FBLITWT.jpg",
+                accepted_image_types=f"{accepted_image_types}",
+                accepted_video_types=f"{accepted_video_types}",
+            )
         # todo: make types a property of the base class
         accepted_image_types = ["jpg", "png", "gif", "raw", "svg", "heic"]
         accepted_video_types = ["mp4", "mov", "m4v", "mpg", "mpeg", "wmv"]
