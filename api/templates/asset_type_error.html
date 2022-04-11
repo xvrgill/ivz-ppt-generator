@@ -1,0 +1,11 @@
+{% extends 'server_error_template.html' %}
+
+{% block header %}
+    <h1>{% block title %}Invalid Asset Error{% endblock %}</h1>
+{% endblock %}
+
+{% block body_text %}You have selected an incorrect asset type. Please check all Air Table records in this post group to ensure that they all have an accepted file extension. See below for accepted filetypes.{% endblock %}
+
+{% block primary_button %}Back to Air Table{% endblock %}
+
+
