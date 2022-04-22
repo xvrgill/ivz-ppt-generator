@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from email import message
 from pptx.util import Inches, Pt
 from os import path, chdir, getcwd, mkdir
 import requests
@@ -187,7 +188,7 @@ class AssetTrio(CreativeAssetStrategy):
 
     @property
     def accepted_image_types(self) -> list:
-        return ["jpg", "png", "gif", "raw", "svg", "heic"]
+        return ["jpg", "jpeg" "png", "gif", "raw", "svg", "heic"]
 
     @property
     def accepted_video_types(self) -> list:
@@ -281,7 +282,17 @@ class AssetTrio(CreativeAssetStrategy):
         left = Inches(self.size_and_position_matrix[index][0])
         top = Inches(self.size_and_position_matrix[index][1])
         width = Inches(self.size_and_position_matrix[index][2])
-        slide.shapes.add_picture(path_to_asset, left, top, width)
+        try:
+            slide.shapes.add_picture(path_to_asset, left, top, width)
+        except ValueError as e:
+            abort(500, message="Error occured while adding images to slide", error=f"{e}")
+        except IndexError as e:
+            abort(
+                500,
+                message="Error occured while adding images to slide",
+                cause="Likely due to including more than three images per post",
+                solution="Please export your social post group as a csv file. More than 3 images is not yet supported by the ppt generator",
+            )
 
     def add_creative_asset_video(self, path_to_asset: str, index: int) -> None:
 
